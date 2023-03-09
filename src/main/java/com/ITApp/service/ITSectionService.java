@@ -15,8 +15,9 @@ public interface ITSectionService {
 
 	public ITSection getById(Long sectionId);
 
-	public ITSection updateSection(String sectionId, ITSection itSection);
 
 	public ITSection createSection(ITSection itRequest);
+
+	public ITSection updateSection(String sectionId, ITSection dto);
 
 }

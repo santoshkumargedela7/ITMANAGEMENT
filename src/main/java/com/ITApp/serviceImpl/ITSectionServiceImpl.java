@@ -14,29 +14,23 @@ import com.ITApp.repository.ITSectionRepo;
 import com.ITApp.service.ITSectionService;
 
 @Service
-public class ITSectionServiceImpl implements ITSectionService{
-		
-	
-	
+public class ITSectionServiceImpl implements ITSectionService {
+
 	protected final Logger logger = LoggerFactory.getLogger(ITSectionServiceImpl.class);
 	@Autowired
 	private ITSectionRepo itSectionRepo;
-	
-	
+
 	@Autowired
 	private ITDeclarationsRepo repo;
-	
-	
+
 	@Override
 	public ITSection createSection(ITSection itRequest) {
-		
+
 		ITSection itSection = itSectionRepo.save(itRequest);
-		
+
 		return itSection;
 	}
-	
-	
-	
+
 	@Override
 	public List<ITDeclarations> getAll() {
 		List<ITDeclarations> list = repo.findAll();
@@ -56,23 +50,21 @@ public class ITSectionServiceImpl implements ITSectionService{
 	}
 
 	@Override
-	public ITSection updateSection(String sectionId, ITSection itSection) {
+	public ITSection updateSection(String sectionId, ITSection dto) {
 		ITSection section = new ITSection();
-		
-		section.setSectionId(itSection.getSectionId());
-		section.setSectionLabel(itSection.getSectionLabel());
-		section.setCreatedBy(itSection.getCreatedBy());
-		section.setCreatedOn(itSection.getCreatedOn());
-		section.setIsDeleted(itSection.getIsDeleted());
-		section.setModifiedOn(itSection.getModifiedOn());
-		section.setItDeclarations(itSection.getItDeclarations());
-		ITSection sec = itSectionRepo.save(section);
-		logger.info("updated details ---->"+section);
-		return sec;
+		section.setSectionId(dto.getSectionId());
+		section.setSectionLabel(dto.getSectionLabel());
+		section.setCreatedBy(dto.getCreatedBy());
+		section.setCreatedOn(dto.getCreatedOn());
+		section.setIsDeleted(dto.getIsDeleted());
+		section.setModifiedOn(dto.getModifiedOn());
+		section.setItDeclarations(dto.getItDeclarations());
+
+		ITSection itSection = itSectionRepo.save(section);
+
+		return itSection;
 	}
 
-	
-	
-	
+
 
 }

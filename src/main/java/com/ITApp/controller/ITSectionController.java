@@ -55,10 +55,15 @@ public class ITSectionController {
 	}
 	
 	@PutMapping("/update/{sectionId}")
-	public ResponseEntity<ITSection> updateSection(@PathVariable("sectionId")String sectionId,
-			@RequestBody ITSection itSection){
-		ITSection section = itSectionService.updateSection(sectionId,itSection);
-		return new ResponseEntity<ITSection>(section,HttpStatus.ACCEPTED);
+	public ResponseEntity<ITSectionDto> updateSection(@PathVariable("sectionId")String sectionId,
+			@RequestBody ITSectionDto itSectionDto){
+		ITSection dto = modelMapper.map(itSectionDto,ITSection.class );
+		ITSection itSection = itSectionService.updateSection(sectionId,dto);
+		ITSectionDto itDto = modelMapper.map(itSection, ITSectionDto.class);
+		return new ResponseEntity<ITSectionDto>(itDto,HttpStatus.ACCEPTED);
+		
+		
+		
 	}
 	
 }
