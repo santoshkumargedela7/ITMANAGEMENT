@@ -17,6 +17,13 @@ public interface EmployeeService {
 
 	public Employee updateEmployee(Long employeeid, Employee empRequest);
 
-	public Employee findByName(String name, Employee empRequest);
+	public Employee findByName(String name);
+
+	public Employee findByEmailIdAndPassword(String emailId, String password);
+
+
+//	public Employee findByemailId(String emailId, String password);
+//
+//	public Employee findByName(String name, Employee empRequest);
 
 }

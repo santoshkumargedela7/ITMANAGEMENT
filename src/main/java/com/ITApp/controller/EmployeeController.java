@@ -24,6 +24,7 @@ import com.ITApp.dto.EmployeeDto;
 import com.ITApp.entity.Employee;
 import com.ITApp.service.EmployeeService;
 
+
 @CrossOrigin
 
 @RestController
@@ -69,22 +70,38 @@ public class EmployeeController {
 
 		Employee employee = employeeService.updateEmployee(employeeid, empRequest);
 		EmployeeDto empResponse = modelMapper.map(employee, EmployeeDto.class);
-	logger.info("updated employee details--->" + empResponse);
+		logger.info("updated employee details--->" + empResponse);
 		return new ResponseEntity<EmployeeDto>(empResponse, HttpStatus.ACCEPTED);
 	}
-		
+
+//	@GetMapping("/name")
+//	public ResponseEntity<EmployeeDto> findByName(@RequestParam("name") String name) {
+//		Employee empRequest = modelMapper.map(name, Employee.class);
+//		Employee employee = employeeService.findByName(name, empRequest);
+//		EmployeeDto empResponse = modelMapper.map(employee, EmployeeDto.class);
+//		return new ResponseEntity<EmployeeDto>(empResponse, HttpStatus.ACCEPTED);
+//	}
+//
+//	@GetMapping("/email")
+//	public ResponseEntity<Employee> findByemailId(@RequestParam("emailId") String emailId,
+//												@RequestParam("password") String password) {
+//		Employee employee = employeeService.findByemailId(emailId, password);
+//		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+//	}
+	
+	
 	@GetMapping("/name")
-	public ResponseEntity<EmployeeDto> findByName(@RequestParam("name")String name){
-		Employee empRequest = modelMapper.map(name, Employee.class);
-		Employee employee = employeeService.findByName(name,empRequest);
-		EmployeeDto empResponse = modelMapper.map(employee, EmployeeDto.class);
-		return new ResponseEntity<EmployeeDto>(empResponse,HttpStatus.ACCEPTED);
+	public ResponseEntity<Employee> findByName(@RequestParam("name")String name){
+		Employee employee = employeeService.findByName(name);
+		return new ResponseEntity<Employee>(employee,HttpStatus.OK);
 	}
-	
-	
-	
-	
-	
+		
+	@GetMapping("/{emailId}/{password}")
+	public ResponseEntity<Employee> findByEmailIdAndPassword(@PathVariable("emailId")String emailId,
+														@PathVariable("password")String password){
+		Employee employee = employeeService.findByEmailIdAndPassword(emailId,password);
+		return new ResponseEntity<Employee>(employee,HttpStatus.OK);
+	}
 	@DeleteMapping("/delete/{employeeid}")
 	public ResponseEntity<Void> deleteEmployee(@PathVariable("employeeid") Long employeeid) {
 		employeeService.deleteEmployee(employeeid);

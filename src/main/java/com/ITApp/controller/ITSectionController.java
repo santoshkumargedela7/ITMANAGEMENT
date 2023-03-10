@@ -25,11 +25,11 @@ import com.ITApp.service.ITSectionService;
 @RestController
 @RequestMapping("/IT")
 public class ITSectionController {
-		
+
 	protected final Logger logger = LoggerFactory.getLogger(ITSectionController.class);
 	@Autowired
 	private ITSectionService itSectionService;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -41,29 +41,28 @@ public class ITSectionController {
 
 		return new ResponseEntity<ITSectionDto>(dto, HttpStatus.CREATED);
 	}
-		
+
 	@GetMapping("/all")
-	 public List<ITSectionDto> getAllSections(){
-		  
-		 return itSectionService.getAllSections().stream().map(section->modelMapper.map(section,ITSectionDto.class))
-				 .collect(Collectors.toList());
-	 }
+	public List<ITSectionDto> getAllSections() {
+
+		return itSectionService.getAllSections().stream().map(section -> modelMapper.map(section, ITSectionDto.class))
+				.collect(Collectors.toList());
+	}
+
 	@GetMapping("/id")
-	public ResponseEntity<ITSection> getById(@RequestParam("sectionId")Long sectionId){
+	public ResponseEntity<ITSection> getById(@RequestParam("sectionId") Long sectionId) {
 		ITSection itSection = itSectionService.getById(sectionId);
-		return new ResponseEntity<ITSection>(itSection,HttpStatus.OK);
+		return new ResponseEntity<ITSection>(itSection, HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/update/{sectionId}")
-	public ResponseEntity<ITSectionDto> updateSection(@PathVariable("sectionId")String sectionId,
-			@RequestBody ITSectionDto itSectionDto){
-		ITSection dto = modelMapper.map(itSectionDto,ITSection.class );
-		ITSection itSection = itSectionService.updateSection(sectionId,dto);
+	public ResponseEntity<ITSectionDto> updateSection(@PathVariable("sectionId") String sectionId,
+			@RequestBody ITSectionDto itSectionDto) {
+		ITSection dto = modelMapper.map(itSectionDto, ITSection.class);
+		ITSection itSection = itSectionService.updateSection(sectionId, dto);
 		ITSectionDto itDto = modelMapper.map(itSection, ITSectionDto.class);
-		return new ResponseEntity<ITSectionDto>(itDto,HttpStatus.ACCEPTED);
-		
-		
-		
+		return new ResponseEntity<ITSectionDto>(itDto, HttpStatus.ACCEPTED);
+
 	}
-	
+
 }

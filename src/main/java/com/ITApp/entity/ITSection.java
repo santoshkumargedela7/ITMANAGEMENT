@@ -12,16 +12,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "IT_SECTIONS")
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 public class ITSection extends AuditModel {
@@ -35,20 +36,17 @@ public class ITSection extends AuditModel {
 	@Column(name = "SECTION_ID")
 	private Long sectionId;
 
-	@Column(name = "SECTION_LABEL",columnDefinition = "varchar(200)")
+	@Column(name = "SECTION_LABEL", columnDefinition = "varchar(200)")
 	private String sectionLabel;
-	
-	@Column(name="IS_DELETED",columnDefinition = "varchar(1) default 'N'")
+
+	@Column(name = "IS_DELETED", columnDefinition = "varchar(1) default 'N'")
 	private String isDeleted;
-	
-	@Column(name="CREATED_BY",columnDefinition = "varchar(20)")
+
+	@Column(name = "CREATED_BY", columnDefinition = "varchar(20)")
 	private String createdBy;
-	
-	
-	
-	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("IT_SECTIONS")
-	private List<ITDeclarations> itDeclarations= new ArrayList<>();
-	
-	
+	private List<ITDeclarations> itDeclarations = new ArrayList<>();
+
 }
