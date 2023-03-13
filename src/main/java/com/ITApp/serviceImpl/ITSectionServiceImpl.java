@@ -1,5 +1,6 @@
 package com.ITApp.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,9 +27,19 @@ public class ITSectionServiceImpl implements ITSectionService {
 	@Override
 	public ITSection createSection(ITSection itRequest) {
 
-		ITSection itSection = itSectionRepo.save(itRequest);
+		List<ITDeclarations> declarations = new ArrayList<>();
 
-		return itSection;
+		ITDeclarations itSectionDeclarations = new ITDeclarations();
+		itSectionDeclarations.setSection(itRequest);
+		itSectionDeclarations.setCreatedBy(itRequest.getCreatedBy());
+		itSectionDeclarations.setIsDeleted(itRequest.getIsDeleted());
+		itSectionDeclarations.setLabel(itRequest.getSectionLabel());
+
+		declarations.add(itSectionDeclarations);
+		itRequest.setItDeclarations(declarations);
+		ITSection section = itSectionRepo.save(itRequest);
+
+		return section;
 	}
 
 	@Override
@@ -64,7 +75,5 @@ public class ITSectionServiceImpl implements ITSectionService {
 
 		return itSection;
 	}
-
-
 
 }

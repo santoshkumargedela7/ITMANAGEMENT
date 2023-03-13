@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import javax.persistence.OneToMany;
@@ -26,13 +28,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ITSection extends AuditModel {
+	public ITSection(Long sectionId2, String createdBy2, String isDeleted2, String sectionLabel2, String sectionLabel3,
+			List<ITDeclarations> itDeclarations2) {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-
+	
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "SECTION_ID")
 	private Long sectionId;
 
@@ -46,6 +54,7 @@ public class ITSection extends AuditModel {
 	private String createdBy;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
 	@JsonIgnoreProperties("IT_SECTIONS")
 	private List<ITDeclarations> itDeclarations = new ArrayList<>();
 

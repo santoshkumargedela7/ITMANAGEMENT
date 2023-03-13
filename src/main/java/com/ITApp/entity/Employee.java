@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,8 +49,10 @@ public class Employee extends AuditModel {
 	private String userStatus;
 
 	@Column(name = "CREATED_BY", columnDefinition = "varchar(20)")
+	@CreatedBy
 	private String createdBy;
 	@Column(name = "MODIFIED_BY")
+	@LastModifiedBy
 	private String modifiedBy;
 
 }

@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +47,7 @@ public class ITDeclarations extends AuditModel {
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "Declaration_id", referencedColumnName = "SECTION_ID")
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	@JsonIgnoreProperties("itDeclarations")
 	private ITSection section;
 
