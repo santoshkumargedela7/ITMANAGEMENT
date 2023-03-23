@@ -11,19 +11,33 @@ public interface EmployeeService {
 
 	public Employee createEmployee(Employee employeeRequest);
 
-	public Employee getEmployeeById(Long id);
+	public Employee getEmployeeById(Long emp_id);
 
 	public void deleteEmployee(Long employeeid);
 
-	public Employee updateEmployee(Long employeeid, Employee empRequest);
+	public Employee updateEmployee(Long emp_id, Employee empRequest);
 
 	public Employee findByName(String name);
 
 	public Employee findByEmailIdAndPassword(String emailId, String password);
 
+	public Employee findByEmailId(String emailId);
 
-//	public Employee findByemailId(String emailId, String password);
-//
-//	public Employee findByName(String name, Employee empRequest);
+	public void updateResetPasswordToken(String token, String email);
 
+//	public Employee getByResetPassword(String token);
+
+	public String forgotPassword(String emailId);
+
+	public String resetPassword(String resetPasswordToken, String password);
+
+
+	
+
+
+
+	
+	
+
+	
 }

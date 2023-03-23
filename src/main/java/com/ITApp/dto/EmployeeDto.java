@@ -1,5 +1,6 @@
 package com.ITApp.dto;
 
+
 import com.ITApp.entity.AuditModel;
 
 import lombok.AllArgsConstructor;
@@ -32,5 +33,7 @@ public class EmployeeDto extends AuditModel {
 
 	private String createdBy;
 	private String modifiedBy;
+	private String role;
+	
 
 }

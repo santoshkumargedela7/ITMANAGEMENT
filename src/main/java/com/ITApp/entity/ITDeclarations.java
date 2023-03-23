@@ -49,6 +49,6 @@ public class ITDeclarations extends AuditModel {
 	@JoinColumn(name = "Declaration_id", referencedColumnName = "SECTION_ID")
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	@JsonIgnoreProperties("itDeclarations")
-	private ITSection section;
+	private ITSection section;	
 
 }

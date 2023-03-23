@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.ITApp.entity.ITDeclarations;
 import com.ITApp.entity.ITSection;
-import com.ITApp.repository.ITDeclarationsRepo;
 import com.ITApp.repository.ITSectionRepo;
 import com.ITApp.service.ITSectionService;
 
@@ -21,8 +20,7 @@ public class ITSectionServiceImpl implements ITSectionService {
 	@Autowired
 	private ITSectionRepo itSectionRepo;
 
-	@Autowired
-	private ITDeclarationsRepo repo;
+	
 
 	@Override
 	public ITSection createSection(ITSection itRequest) {
@@ -42,12 +40,7 @@ public class ITSectionServiceImpl implements ITSectionService {
 		return section;
 	}
 
-	@Override
-	public List<ITDeclarations> getAll() {
-		List<ITDeclarations> list = repo.findAll();
-		return list;
-	}
-
+	
 	@Override
 	public List<ITSection> getAllSections() {
 		List<ITSection> list = itSectionRepo.findAll();
@@ -74,6 +67,14 @@ public class ITSectionServiceImpl implements ITSectionService {
 		ITSection itSection = itSectionRepo.save(section);
 
 		return itSection;
+	}
+
+	
+
+	@Override
+	public void deleteById(Long sectionId) {
+		itSectionRepo.deleteById(sectionId);
+
 	}
 
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,11 +33,7 @@ public class ITSectionController {
 
 	@Autowired
 	private ModelMapper modelMapper;
-		
-	
-	
-	
-	
+
 	@PostMapping("/saveSection")
 	public ResponseEntity<ITSectionDto> createSection(@RequestBody ITSectionDto itSectionDto) {
 		ITSection itRequest = modelMapper.map(itSectionDto, ITSection.class);
@@ -67,6 +64,12 @@ public class ITSectionController {
 		ITSectionDto itDto = modelMapper.map(itSection, ITSectionDto.class);
 		return new ResponseEntity<ITSectionDto>(itDto, HttpStatus.ACCEPTED);
 
+	}
+
+	@DeleteMapping("/delete/{sectionId}")
+	public ResponseEntity<Void> deleteById(@PathVariable("sectionId") Long sectionId) {
+		itSectionService.deleteById(sectionId);
+		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
 
 }

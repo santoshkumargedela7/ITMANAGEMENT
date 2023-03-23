@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class ITSection extends AuditModel {
 	public ITSection(Long sectionId2, String createdBy2, String isDeleted2, String sectionLabel2, String sectionLabel3,
 			List<ITDeclarations> itDeclarations2) {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/**
