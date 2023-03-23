@@ -6,7 +6,6 @@ import com.ITApp.entity.Employee;
 
 public interface EmployeeService {
 
-
 	public List<Employee> getAllEmployees();
 
 	public Employee createEmployee(Employee employeeRequest);
@@ -25,19 +24,8 @@ public interface EmployeeService {
 
 	public void updateResetPasswordToken(String token, String email);
 
-//	public Employee getByResetPassword(String token);
-
 	public String forgotPassword(String emailId);
 
 	public String resetPassword(String resetPasswordToken, String password);
 
-
-	
-
-
-
-	
-	
-
-	
 }

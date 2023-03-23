@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -49,7 +48,7 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	@Autowired
 	private JavaMailSender mailSender;
 
@@ -57,8 +56,7 @@ public class EmployeeController {
 	public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
 		Employee employeeRequest = modelMapper.map(employeeDto, Employee.class);
 		Employee employee = employeeService.createEmployee(employeeRequest);
-		
-		
+
 		EmployeeDto empResponse = modelMapper.map(employee, EmployeeDto.class);
 		logger.info("created Employee--->" + empResponse);
 		return new ResponseEntity<EmployeeDto>(empResponse, HttpStatus.CREATED);
@@ -88,22 +86,17 @@ public class EmployeeController {
 		logger.info("updated employee details--->" + empResponse);
 		return new ResponseEntity<EmployeeDto>(empResponse, HttpStatus.ACCEPTED);
 	}
-	
-	
-	
-	
 
 	@GetMapping("/name")
 	public ResponseEntity<Employee> findByName(@RequestParam("name") String name) {
 		Employee employee = employeeService.findByName(name);
 		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 	}
-	
-	
+
 	@GetMapping("/email/{emailId}")
-	public ResponseEntity<Employee> findByEmailId(@PathVariable("emailId") String emailId){
+	public ResponseEntity<Employee> findByEmailId(@PathVariable("emailId") String emailId) {
 		Employee employee = employeeService.findByEmailId(emailId);
-		return new ResponseEntity<Employee>(employee,HttpStatus.OK);
+		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 	}
 
 	@GetMapping("/{emailId}/{password}")
@@ -112,82 +105,63 @@ public class EmployeeController {
 		Employee employee = employeeService.findByEmailIdAndPassword(emailId, password);
 		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 	}
-		
+
 	@PostMapping("/forgot_password")
-	public String  processForgotPassword(HttpServletRequest request, Model model) throws UnsupportedEncodingException, MessagingException {
+	public String processForgotPassword(HttpServletRequest request, Model model)
+			throws UnsupportedEncodingException, MessagingException {
 		String emailId = request.getParameter("emailId");
 		String token = RandomString.make(30);
 		try {
-			employeeService.updateResetPasswordToken(token,emailId);
-			String resetPasswordLink = Utility.getSiteUrl(request)+"/reset_password?token="+token;
-			
-			
+			employeeService.updateResetPasswordToken(token, emailId);
+			String resetPasswordLink = Utility.getSiteUrl(request) + "/reset_password?token=" + token;
+
 			sendEmail(emailId, resetPasswordLink);
-			model.addAttribute("message","we have sent a reset password link to your mail. Please check. ");
-			
+			model.addAttribute("message", "we have sent a reset password link to your mail. Please check. ");
+
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}
 		return "forgot_password_form";
 	}
-	
-	
-//	@GetMapping("/reset_password")
-//	public String resetPassword(@Param(value="token") String token, Model model) {
-//		Employee employee = employeeService.getByResetPassword(token);
-//		if(employee==null) {
-//			 model.addAttribute("message", "Invalid Token");
-//		        return "message";
-//			
-//		}
-//		return "reset_password_form";
-//	}
-	
-	
-	public void sendEmail(String recipientEmail, String link)
-	        throws MessagingException, UnsupportedEncodingException {
-	    MimeMessage message = mailSender.createMimeMessage();              
-	    MimeMessageHelper helper = new MimeMessageHelper(message);
-	     
-	    helper.setFrom("santoshgedela345@gmail.com", "Shopme Support");
-	    helper.setTo(recipientEmail);
-	     
-	    String subject = "Here's the link to reset your password";
-	     
-	    String content = "<p>Hello,</p>"
-	            + "<p>You have requested to reset your password.</p>"
-	            + "<p>Click the link below to change your password:</p>"
-	            + "<p><a href=\"" + link + "\">Change my password</a></p>"
-	            + "<br>"
-	            + "<p>Ignore this email if you do remember your password, "
-	            + "or you have not made the request.</p>";
-	     
-	    helper.setSubject(subject);
-	     
-	    helper.setText(content, true);
-	     
-	    mailSender.send(message);
+
+
+
+	public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+
+		helper.setFrom("santoshgedela345@gmail.com", "Shopme Support");
+		helper.setTo(recipientEmail);
+
+		String subject = "Here's the link to reset your password";
+
+		String content = "<p>Hello,</p>" + "<p>You have requested to reset your password.</p>"
+				+ "<p>Click the link below to change your password:</p>" + "<p><a href=\"" + link
+				+ "\">Change my password</a></p>" + "<br>" + "<p>Ignore this email if you do remember your password, "
+				+ "or you have not made the request.</p>";
+
+		helper.setSubject(subject);
+
+		helper.setText(content, true);
+
+		mailSender.send(message);
 	}
-	
-	
+
 	@PostMapping("/forgot-password")
 	public String forgotPassword(@RequestParam("emailId") String emailId) {
-		String response  = employeeService.forgotPassword(emailId);
-		 if(!response.startsWith("Invalid")) {
-			 response = "http://localhost:8080/reset-password?resetPasswordToken="+response;
-		 }
-		 return response;
+		String response = employeeService.forgotPassword(emailId);
+		if (!response.startsWith("Invalid")) {
+			response = "http://localhost:8080/reset-password?resetPasswordToken=" + response;
+		}
+		return response;
 	}
-	
+
 	@PutMapping("/reset-password")
-	public String resetPassword(@RequestParam String resetPasswordToken,
-			@RequestParam String password) {
+	public String resetPassword(@RequestParam String resetPasswordToken, @RequestParam String password) {
 
 		return employeeService.resetPassword(resetPasswordToken, password);
 	}
-	
-	
-	
+
 	@DeleteMapping("/delete/{employeeid}")
 	public ResponseEntity<Void> deleteEmployee(@PathVariable("employeeid") Long employeeid) {
 		employeeService.deleteEmployee(employeeid);

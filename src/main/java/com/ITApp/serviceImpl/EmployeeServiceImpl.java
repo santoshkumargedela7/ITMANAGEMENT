@@ -1,6 +1,5 @@
 package com.ITApp.serviceImpl;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			Employee employee = employeeRepository.save(employeeRequest);
 			return employee;
 		} catch (Exception e) {
-			
+
 		}
 		return null;
 	}
@@ -74,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employee.setIsLocked(empRequest.getIsLocked());
 			employee.setPassword(empRequest.getPassword());
 			employee.setUserStatus(empRequest.getUserStatus());
-			
+
 			Employee emp = employeeRepository.save(employee);
 			return emp;
 		} catch (Exception e) {
@@ -86,14 +85,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Employee findByName(String name) {
 		Employee employee = employeeRepository.findByName(name);
-		
+
 		return employee;
 	}
 
 	@Override
 	public Employee findByEmailIdAndPassword(String emailId, String password) {
 		Employee employee = employeeRepository.findByEmailIdAndPassword(emailId, password);
-		
+
 		return employee;
 	}
 
@@ -103,38 +102,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 			Employee employee = employeeRepository.findByEmailId(emailId);
 			return employee;
 		} catch (Exception e) {
-			
+
 		}
 		return null;
-		
-		
-		
+
 	}
 
 	@Override
 	public void updateResetPasswordToken(String token, String emailId) {
 		Employee employee = employeeRepository.findByEmailId(emailId);
-		if(employee!=null) {
+		if (employee != null) {
 			employee.setResetPasswordToken(token);
 			employeeRepository.save(employee);
+		} else {
+			throw new EmployeeNotFoundException("couldn't find any employee with the email" + emailId);
 		}
-		else {
-			throw new EmployeeNotFoundException("couldn't find any employee with the email"+emailId);
-		}
-		
+
 	}
 
-//	@Override
-//	public Employee getByResetPassword(String token) {
-//		
-//		return employeeRepository.findByResetPasswordToken(token);
-//		}
-
-	
-	
 	public void updatePassword(Employee employee, String newPassword) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
+
 		String encodedPassword = passwordEncoder.encode(newPassword);
 		employee.setPassword(encodedPassword);
 		employee.setResetPasswordToken(null);
@@ -143,37 +131,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public String forgotPassword(String emailId) {
-		Optional<Employee> empOptional = Optional.ofNullable(
-				employeeRepository.findByEmailId(emailId));
-		
-		if(!empOptional.isPresent()) {
+		Optional<Employee> empOptional = Optional.ofNullable(employeeRepository.findByEmailId(emailId));
+
+		if (!empOptional.isPresent()) {
 			return "Invalid emailId";
 		}
-		
+
 		Employee employee = empOptional.get();
 		employee.setResetPasswordToken(generateToken());
 		employee = employeeRepository.save(employee);
-		
+
 		return employee.getResetPasswordToken();
 	}
 
 	private String generateToken() {
 		StringBuilder token = new StringBuilder();
-		
-		return token.append(UUID.randomUUID().toString()).append(UUID.
-				randomUUID().toString()).toString();
+
+		return token.append(UUID.randomUUID().toString()).append(UUID.randomUUID().toString()).toString();
 	}
 
 	@Override
 	public String resetPassword(String resetPasswordToken, String password) {
-		
-		Optional<Employee> empOptional = Optional.ofNullable(employeeRepository.
-				findByResetPasswordToken(resetPasswordToken));
+
+		Optional<Employee> empOptional = Optional
+				.ofNullable(employeeRepository.findByResetPasswordToken(resetPasswordToken));
 
 		if (!empOptional.isPresent()) {
 			return "Invalid token.";
 		}
-		
+
 		Employee emp = empOptional.get();
 
 		emp.setPassword(password);
@@ -184,14 +170,4 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return "Your password successfully updated.";
 	}
 
-	
-	
-	
-	
-	
-	
 }
-	
-
-
-
