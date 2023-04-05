@@ -28,11 +28,10 @@ public class ITSectionServiceImpl implements ITSectionService {
 		List<ITDeclarations> declarations = new ArrayList<>();
 
 		ITDeclarations itSectionDeclarations = new ITDeclarations();
-		itSectionDeclarations.setSection(itRequest);
+//		itSectionDeclarations.setSection(itRequest);
 		itSectionDeclarations.setCreatedBy(itRequest.getCreatedBy());
 		itSectionDeclarations.setIsDeleted(itRequest.getIsDeleted());
 		itSectionDeclarations.setLabel(itRequest.getSectionLabel());
-
 		declarations.add(itSectionDeclarations);
 		itRequest.setItDeclarations(declarations);
 		ITSection section = itSectionRepo.save(itRequest);

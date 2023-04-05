@@ -1,20 +1,11 @@
 package com.ITApp.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,13 +33,25 @@ public class ITDeclarations extends AuditModel {
 	@Column(name = "IS_DELETED", columnDefinition = "varchar(1) default 'N'")
 	private String isDeleted;
 
+	@Column(name = "Actual_value")
+	private Long actualValue;
+	@Column(name = "Approved_value")
+	private Long approvedValue;
+	@Column(name = "Declared_value")
+	private Long declaredValue;
+	
+		
 	@Column(name = "CREATED_BY", columnDefinition = "varchar(20)")
 	private String createdBy;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "Declaration_id", referencedColumnName = "SECTION_ID")
-	@OnDelete(action=OnDeleteAction.CASCADE)
-	@JsonIgnoreProperties("itDeclarations")
-	private ITSection section;	
+//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "Declaration_id", referencedColumnName = "SECTION_ID")
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	@JsonIgnoreProperties("itDeclarations")
+//	private ITSection section;
+//		
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "it_declare_id")
+//	private Employee employee;
 
 }

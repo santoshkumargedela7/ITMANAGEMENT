@@ -5,7 +5,6 @@ import java.io.InputStream;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;

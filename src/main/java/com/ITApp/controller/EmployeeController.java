@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,19 +49,32 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
-	@Autowired
-	private JavaMailSender mailSender;
+//	@Autowired
+//	private JavaMailSender mailSender;
 
+//	@PostMapping("/create")
+//	public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
+//		Employee employeeRequest = modelMapper.map(employeeDto, Employee.class);
+//		Employee employee = employeeService.createEmployee(employeeRequest);
+//
+//		EmployeeDto empResponse = modelMapper.map(employee, EmployeeDto.class);
+//		logger.info("created Employee--->" + empResponse);
+//		return new ResponseEntity<EmployeeDto>(empResponse, HttpStatus.CREATED);
+//	}
+	
 	@PostMapping("/create")
-	public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
-		Employee employeeRequest = modelMapper.map(employeeDto, Employee.class);
-		Employee employee = employeeService.createEmployee(employeeRequest);
+	public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
 
-		EmployeeDto empResponse = modelMapper.map(employee, EmployeeDto.class);
-		logger.info("created Employee--->" + empResponse);
-		return new ResponseEntity<EmployeeDto>(empResponse, HttpStatus.CREATED);
+	    try {
+	        Employee emp = employeeService.createEmployee(employee);
+	        return new ResponseEntity<Employee>(emp, HttpStatus.CREATED);
+	    } catch (Exception e) {
+
+	        logger.error("error in create employee method: " + e.getMessage());
+	        ;
+	    }
+	    return null;
 	}
-
 	@GetMapping("/get")
 	public List<EmployeeDto> getAllEmployees() {
 		return employeeService.getAllEmployees().stream().map(employee -> modelMapper.map(employee, EmployeeDto.class))
@@ -124,13 +137,26 @@ public class EmployeeController {
 		return "forgot_password_form";
 	}
 
-
+	@PostMapping("/saveDeclaration")
+	public ResponseEntity<EmployeeDto> saveDeclaration(@RequestBody EmployeeDto employeeDto) {
+		Employee employee = modelMapper.map(employeeDto, Employee.class);
+		Employee emp = employeeService.saveDeclaration(employee);
+		EmployeeDto dto = modelMapper.map(emp, EmployeeDto.class);
+		return new ResponseEntity<>(dto, HttpStatus.CREATED);
+	}
 
 	public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
-		MimeMessage message = mailSender.createMimeMessage();
+
+		JavaMailSenderImpl sender = new JavaMailSenderImpl();
+
+		sender.setHost("smtp.gmail.com");
+
+		MimeMessage message = sender.createMimeMessage();
+
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 
-		helper.setFrom("santoshgedela345@gmail.com", "Shopme Support");
+		// helper.setFrom("santoshgedela345@gmail.com", " ");
+		// helper.setFrom("santoshgedela345@gmail.com");
 		helper.setTo(recipientEmail);
 
 		String subject = "Here's the link to reset your password";
@@ -144,14 +170,17 @@ public class EmployeeController {
 
 		helper.setText(content, true);
 
-		mailSender.send(message);
+		sender.send(message);
 	}
 
 	@PostMapping("/forgot-password")
-	public String forgotPassword(@RequestParam("emailId") String emailId) {
+	public String forgotPassword(@RequestParam("emailId") String emailId)
+			throws UnsupportedEncodingException, MessagingException {
 		String response = employeeService.forgotPassword(emailId);
 		if (!response.startsWith("Invalid")) {
 			response = "http://localhost:8080/reset-password?resetPasswordToken=" + response;
+			sendEmail(emailId, response);
+
 		}
 		return response;
 	}

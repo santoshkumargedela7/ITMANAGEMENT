@@ -1,8 +1,14 @@
 package com.ITApp.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -23,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class Employee extends AuditModel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "EMP_ID", columnDefinition = "varchar(20)", nullable = false)
 
@@ -36,7 +42,7 @@ public class Employee extends AuditModel {
 	private Long mobileNumber;
 
 	@Column(name = "EMAIL_ID", columnDefinition = "varchar(50)", nullable = false)
-	
+
 	private String emailId;
 
 	@Column(name = "PASSWORD", columnDefinition = "varchar(12) default 'Y'", nullable = false)
@@ -51,17 +57,22 @@ public class Employee extends AuditModel {
 	private String userStatus;
 
 	@Column(name = "CREATED_BY", columnDefinition = "varchar(20)")
+	
 	@CreatedBy
 	private String createdBy;
 	@Column(name = "MODIFIED_BY")
-	
+
 	@LastModifiedBy
 	private String modifiedBy;
-	
-	
-	 @Column(name = "reset_password_token")
+
+	@Column(name = "reset_password_token")
 	private String resetPasswordToken;
 
 	private String role;
+
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+
+	@JoinColumn(name = "emp_section_id")
+	private List<ITSection> sections;
 
 }

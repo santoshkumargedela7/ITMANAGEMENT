@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -28,10 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ITSection extends AuditModel {
-	public ITSection(Long sectionId2, String createdBy2, String isDeleted2, String sectionLabel2, String sectionLabel3,
-			List<ITDeclarations> itDeclarations2) {
-		
-	}
+	
 
 	/**
 	 * 
@@ -54,7 +51,7 @@ public class ITSection extends AuditModel {
 	private String createdBy;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-
+	@JoinColumn(name = "sec_id")
 	@JsonIgnoreProperties("IT_SECTIONS")
 	private List<ITDeclarations> itDeclarations = new ArrayList<>();
 

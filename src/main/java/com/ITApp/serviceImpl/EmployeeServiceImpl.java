@@ -16,7 +16,7 @@ import com.ITApp.repository.EmployeeRepository;
 import com.ITApp.service.EmployeeService;
 
 @Service
-@Transactional
+
 public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
@@ -29,13 +29,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public Employee createEmployee(Employee employeeRequest) {
+	public Employee createEmployee(Employee employee) {
 
 		try {
-			Employee employee = employeeRepository.save(employeeRequest);
-			return employee;
+			Employee employee1 = employeeRepository.save(employee);
+			return employee1;
 		} catch (Exception e) {
-
+		System.out.println(e.getMessage());	
 		}
 		return null;
 	}
@@ -73,6 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employee.setIsLocked(empRequest.getIsLocked());
 			employee.setPassword(empRequest.getPassword());
 			employee.setUserStatus(empRequest.getUserStatus());
+			employee.setRole(empRequest.getRole());
 
 			Employee emp = employeeRepository.save(employee);
 			return emp;
@@ -168,6 +169,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeRepository.save(emp);
 
 		return "Your password successfully updated.";
+	}
+
+	@Override
+	public Employee saveDeclaration(Employee employee) {
+		
+		
+		try {
+			Employee emp = employeeRepository.save(employee);
+
+			return emp;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

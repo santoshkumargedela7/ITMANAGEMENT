@@ -8,7 +8,7 @@ public interface EmployeeService {
 
 	public List<Employee> getAllEmployees();
 
-	public Employee createEmployee(Employee employeeRequest);
+	public Employee createEmployee(Employee employee);
 
 	public Employee getEmployeeById(Long emp_id);
 
@@ -27,5 +27,9 @@ public interface EmployeeService {
 	public String forgotPassword(String emailId);
 
 	public String resetPassword(String resetPasswordToken, String password);
+
+	public Employee saveDeclaration(Employee employee);
+
+//	public Employee saveDeclaration(Employee employee);
 
 }
